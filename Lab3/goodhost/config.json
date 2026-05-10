@@ -1,0 +1,23 @@
+{
+  "appName": "SecureMail Pro",
+  "version": "1.0.0",
+  "mode": "mode-sri-active",
+  "sriVersion": "v1.0.0",
+  "_modeOptions": [
+    "default",
+    "mode1",
+    "csp-strict",
+    "csp-balanced",
+    "mode-insecure",
+    "mode-sri-active"
+  ],
+  "_sriVersionOptions": ["v1.0.0", "v1.0.1"],
+  "_notes": {
+    "default":        "No CORS, no CSP. SOP only. fetch() to other ports blocked.",
+    "mode1":          "CORS wildcard (*). All cross-origin fetch() allowed.",
+    "csp-strict":     "CSP: default-src 'self'. Everything from other ports blocked.",
+    "csp-balanced":   "CSP: scripts only from :3000 :4000 :6000. Port 5000 blocked.",
+    "mode-insecure":  "Balanced CSP but NO SRI. CDN breach alert fires unchecked.",
+    "mode-sri-active":"Balanced CSP + SRI hash on react-mock.js. CDN breach blocked."
+  }
+}
