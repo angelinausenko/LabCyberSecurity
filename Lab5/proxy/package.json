@@ -1,0 +1,11 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "MitM Proxy Server (Port 8080) — Lab 5. No dependencies — uses Node built-in http only.",
+  "main": "server.js",
+  "scripts": {
+    "start":  "node server.js",
+    "breach": "node server.js --mode breach"
+  },
+  "dependencies": {}
+}
