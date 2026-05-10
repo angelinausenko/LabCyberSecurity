@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SecureMail Pro</title>
+
+  <!-- CSS from CDN (Port 6000 - StaticHost) -->
+  <link rel="stylesheet" href="http://localhost:6000/theme.css" />
+
+  <style>
+    /* Base Reset & Variables */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark:    #0f1117;
+      --bg-panel:   #171a23;
+      --bg-hover:   #1e2233;
+      --border:     #2a2f45;
+      --accent:     #4f8ef7;
+      --accent-dim: #2a4a8a;
+      --text-main:  #e2e8f8;
+      --text-muted: #6b7394;
+      --danger:     #e05555;
+      --success:    #3ecf8e;
+      --font-mono:  'Courier New', monospace;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 24px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-container img {
+      height: 36px;
+      width: 36px;
+      border-radius: 6px;
+    }
+
+    header h1 {
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+
+    header nav { margin-left: auto; display: flex; gap: 8px; }
+
+    header nav a {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    header nav a:hover { background: var(--bg-hover); color: var(--text-main); }
+
+    /* ── User bar ── */
+    .user-bar {
+      padding: 6px 24px;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #username {
+      font-weight: bold;
+      color: #4f8ef7;           /* styled by CDN theme.css */
+    }
+
+    /* ── Layout ── */
+    .app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 280px;
+      min-width: 220px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    #email-list { flex: 1; overflow-y: auto; }
+
+    .email-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .email-item:hover, .email-item.active {
+      background: var(--bg-hover);
+      border-left: 3px solid var(--accent);
+      padding-left: 13px;
+    }
+
+    .email-sender {
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .email-subject {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Main content ── */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 40px;
+      background: var(--bg-dark);
+    }
+
+    .email-view { max-width: 680px; }
+
+    .email-view-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .email-view-subject {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .email-view-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .email-view-body {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--text-main);
+      white-space: pre-wrap;
+    }
+
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-muted);
+      gap: 12px;
+    }
+
+    .placeholder-icon { font-size: 3rem; opacity: 0.3; }
+
+    /* ── Status bar ── */
+    #status-bar {
+      padding: 6px 24px;
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      gap: 24px;
+    }
+
+    .status-item { display: flex; gap: 6px; align-items: center; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+    .dot.warn { background: #f0a500; }
+    .dot.err  { background: var(--danger); }
+
+    /* ── Loading ── */
+    .loading {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      padding: 20px 16px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo-container">
+    <!-- Logo from CDN (Port 6000 - StaticHost) -->
+    <img src="http://localhost:6000/logo.png" alt="SecureMail Logo" onerror="this.style.background='#4f8ef7';this.alt='✉'"/>
+  </div>
+  <h1>SecureMail Pro</h1>
+  <nav>
+    <a href="#">Inbox</a>
+    <a href="#">Sent</a>
+    <a href="#">Drafts</a>
+    <a href="#">Settings</a>
+  </nav>
+</header>
+
+<!-- ══ USER BAR ══ -->
+<div class="user-bar">
+  Logged in as: <span id="username">John Smith</span>
+  &nbsp;|&nbsp; Session active
+</div>
+
+<!-- ══ APP BODY ══ -->
+<div class="app-body">
+
+  <!-- Sidebar: Email List -->
+  <aside class="sidebar">
+    <div class="sidebar-header">Inbox</div>
+    <div id="email-list">
+      <div class="loading">Loading emails…</div>
+    </div>
+  </aside>
+
+  <!-- Main: Email View -->
+  <main class="main-content">
+    <div id="email-view">
+      <div class="placeholder">
+        <div class="placeholder-icon">✉</div>
+        <div>Select an email to read</div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ══ STATUS BAR ══ -->
+<div id="status-bar">
+  <span class="status-item"><span class="dot"></span> GoodHost :3000</span>
+  <span class="status-item" id="cdn-status"><span class="dot warn"></span> CDN :6000</span>
+  <span class="status-item" id="support-status"><span class="dot warn"></span> TrustCo :4000</span>
+  <span class="status-item" id="weather-status"><span class="dot warn"></span> WeatherApp :5000</span>
+</div>
+
+<!-- ══ MAIN APP SCRIPT ══ -->
+<script src="/main.js"></script>
+
+<!-- ══ THE BRIDGE: Third-party scripts ══ -->
+<!-- React-mock library from CDN (Port 6000 - StaticHost) -->
+<script src="http://localhost:6000/react-mock.js"></script>
+
+<!-- Support Chat Widget from Partner (Port 4000 - TrustCo) -->
+<script src="http://localhost:4000/support.js"></script>
+
+<!-- Weather Widget from Utility (Port 5000 - WeatherApp) -->
+<script src="http://localhost:5000/weather.js"></script>
+
+</body>
+</html>
