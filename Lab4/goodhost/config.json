@@ -1,0 +1,28 @@
+{
+  "appName": "SecureMail Pro",
+  "version": "1.0.0",
+  "mode": "cookie-naive",
+  "sriVersion": "v1.0.0",
+  "_modeOptions": [
+    "default",
+    "mode1",
+    "csp-strict",
+    "csp-balanced",
+    "mode-insecure",
+    "mode-sri-active",
+    "cookie-naive",
+    "cookie-httponly",
+    "cookie-path"
+  ],
+  "_notes": {
+    "default":         "No CORS, no CSP. SOP only.",
+    "mode1":           "CORS wildcard (*). All cross-origin fetch() allowed.",
+    "csp-strict":      "CSP default-src 'self'. Everything external blocked.",
+    "csp-balanced":    "CSP: scripts only from :3000 :4000 :6000. Port 5000 blocked.",
+    "mode-insecure":   "Balanced CSP, no SRI. CDN breach alert fires.",
+    "mode-sri-active": "Balanced CSP + SRI hash on react-mock.js. CDN breach blocked.",
+    "cookie-naive":    "Lab 4 Task 1: Set-Cookie with NO flags. JS-readable, sent everywhere.",
+    "cookie-httponly": "Lab 4 Task 3: HttpOnly added. document.cookie cannot see SessionID.",
+    "cookie-path":     "Lab 4 Task 4: Path=/api. Cookie only sent to /api/* routes."
+  }
+}
