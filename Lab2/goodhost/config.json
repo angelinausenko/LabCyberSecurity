@@ -1,0 +1,6 @@
+{
+  "appName": "SecureMail Pro",
+  "version": "1.0.0",
+  "mode": "csp-balanced",
+  "_modeOptions": ["default", "mode1", "csp-strict", "csp-balanced"]
+}
